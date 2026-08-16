@@ -35,6 +35,24 @@ describe('ChallengePrepareScreen', () => {
     expect(mockRecordChallengeAttempt).not.toHaveBeenCalled();
   });
 
+  it("shows the real Challenge's working objective and an honest, RQ0-aware pending note", async () => {
+    (useLocalSearchParams as jest.Mock).mockReturnValue({ challengeId: 'desert-foundations-challenge-1' });
+
+    const { getByText } = await render(<PrepareScreen />);
+
+    expect(getByText('Prepare: First Read')).toBeTruthy();
+    expect(getByText(/Slow down and read your surroundings/)).toBeTruthy();
+    expect(getByText(/Preparation content for this challenge has not yet been authored/)).toBeTruthy();
+  });
+
+  it('shows the curriculum safety-gate note only for a Challenge that carries one (Challenge 27)', async () => {
+    (useLocalSearchParams as jest.Mock).mockReturnValue({ challengeId: 'desert-foundations-challenge-27' });
+
+    const { getByText } = await render(<PrepareScreen />);
+
+    expect(getByText(/Curriculum safety gate: Enhanced Field Gate/)).toBeTruthy();
+  });
+
   it('records a "postponed" outcome — not a failure — and returns, when Postpone is pressed', async () => {
     (useLocalSearchParams as jest.Mock).mockReturnValue({ challengeId: 'desert-foundations-challenge-1' });
 

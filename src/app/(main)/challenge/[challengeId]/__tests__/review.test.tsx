@@ -68,7 +68,22 @@ describe('ChallengeReviewScreen', () => {
     expect(getByText(`Outcome: ${label}`)).toBeTruthy();
   });
 
-  it('shows a placeholder reflection note rather than inventing prompts', async () => {
+  it('keeps the recorded outcome explicitly separate from any competency assessment', async () => {
+    mockIsHydrated = true;
+    mockProgress = {
+      challenges: {
+        'desert-foundations-challenge-1': { outcome: 'completed', updatedAt: '2026-01-01T00:00:00.000Z' },
+      },
+    };
+
+    const { getByText, queryByText } = await render(<ReviewScreen />);
+
+    expect(getByText(/not a competency assessment/)).toBeTruthy();
+    expect(queryByText(/Demonstrated/)).toBeNull();
+    expect(queryByText(/Developing/)).toBeNull();
+  });
+
+  it('shows a placeholder reflection note (research status RQ0) rather than inventing prompts', async () => {
     mockIsHydrated = true;
     mockProgress = {
       challenges: {
@@ -78,6 +93,9 @@ describe('ChallengeReviewScreen', () => {
 
     const { getByText } = await render(<ReviewScreen />);
 
-    expect(getByText('Reflection prompts are not yet available for this challenge.')).toBeTruthy();
+    expect(
+      getByText(/Reflection content for this challenge has not yet been authored or safety-reviewed/)
+    ).toBeTruthy();
+    expect(getByText(/unresearched/)).toBeTruthy();
   });
 });

@@ -3,6 +3,7 @@ import { StyleSheet, Text } from 'react-native';
 
 import { ActionButton } from '@/components/action-button';
 import { ScreenContainer } from '@/components/screen-container';
+import { findChallengeById } from '@/content';
 import { colors } from '@/design/tokens';
 import { useProgress } from '@/state/progress-context';
 
@@ -15,11 +16,22 @@ import { useProgress } from '@/state/progress-context';
 // that the user has reviewed or acknowledged any actual safety
 // information. This screen exists to keep the structural gate (route +
 // recorded-acceptance timestamp) wired correctly ahead of Field Mode; it
-// is not itself an approved safety-acceptance experience. See the
-// completion report for this flagged as an open content/approval gap.
+// is not itself an approved safety-acceptance experience.
+//
+// This single acceptance is a Pack-wide gate (one `safetyAcceptedAt`
+// timestamp — src/state/progress-types.ts), not a per-Challenge one; that
+// is unchanged by this pass. Where the triggering Challenge is known (via
+// an explicit `challengeId` param, not parsed out of `returnTo`), it is
+// named so the learner knows what they're about to enter, and — because
+// every V1 Challenge is research status RQ0 (src/domain/research-status.ts)
+// — this screen is explicit that accepting here does NOT mean that
+// Challenge's specific field/safety content has been authored or
+// verified. See the completion report for the missing acceptance-content
+// gap.
 export default function SafetyAcceptanceScreen() {
-  const { returnTo } = useLocalSearchParams<{ returnTo?: string }>();
+  const { returnTo, challengeId } = useLocalSearchParams<{ returnTo?: string; challengeId?: string }>();
   const { acceptSafety } = useProgress();
+  const challenge = challengeId ? findChallengeById(challengeId) : undefined;
 
   function handleContinue() {
     acceptSafety();
@@ -34,6 +46,13 @@ export default function SafetyAcceptanceScreen() {
         reviewing and acknowledging approved safety information before Field Mode, once that
         content exists.
       </Text>
+      {challenge && (
+        <Text style={styles.meta}>
+          You are about to enter Field Mode for: {challenge.name}. This general acceptance does not
+          mean the field or safety content for this specific challenge has been authored, reviewed,
+          or verified — it has not.
+        </Text>
+      )}
       <ActionButton label="Continue" onPress={handleContinue} />
     </ScreenContainer>
   );
@@ -48,5 +67,9 @@ const styles = StyleSheet.create({
   body: {
     color: colors.textSecondary,
     fontSize: 16,
+  },
+  meta: {
+    color: colors.textSecondary,
+    fontSize: 14,
   },
 });

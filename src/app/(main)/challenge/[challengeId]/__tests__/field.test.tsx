@@ -44,7 +44,7 @@ describe('ChallengeFieldScreen (Field Mode)', () => {
     expect(Redirect).not.toHaveBeenCalled();
   });
 
-  it('redirects to safety acceptance, with a returnTo back to this challenge, when safety has not been accepted', async () => {
+  it('redirects to safety acceptance, with a returnTo and challengeId back to this challenge, when safety has not been accepted', async () => {
     mockIsHydrated = true;
     mockProgress = { safetyAcceptedAt: null };
 
@@ -55,21 +55,40 @@ describe('ChallengeFieldScreen (Field Mode)', () => {
       expect.objectContaining({
         href: {
           pathname: '/safety/acceptance',
-          params: { returnTo: '/challenge/desert-foundations-challenge-1/field' },
+          params: {
+            returnTo: '/challenge/desert-foundations-challenge-1/field',
+            challengeId: 'desert-foundations-challenge-1',
+          },
         },
       })
     );
   });
 
-  it('renders the Field Mode shell (no fabricated field content) once safety is accepted', async () => {
+  it('renders the Field Mode shell (no fabricated field content) driven by the real Challenge identity', async () => {
+    mockIsHydrated = true;
+    mockProgress = { safetyAcceptedAt: '2026-01-01T00:00:00.000Z' };
+
+    const { getByText, queryByText } = await render(<FieldScreen />);
+
+    expect(Redirect).not.toHaveBeenCalled();
+    expect(getByText('Field Mode')).toBeTruthy();
+    expect(getByText('First Read')).toBeTruthy();
+    expect(getByText(/has not yet been authored/)).toBeTruthy();
+    // Challenge 1 carries no explicit safety-gate class — none is invented.
+    expect(queryByText(/Safety gate:/)).toBeNull();
+  });
+
+  it('shows the curriculum safety-gate class structurally for a Challenge that has one (Challenge 27)', async () => {
+    (useLocalSearchParams as jest.Mock).mockReturnValue({
+      challengeId: 'desert-foundations-challenge-27',
+    });
     mockIsHydrated = true;
     mockProgress = { safetyAcceptedAt: '2026-01-01T00:00:00.000Z' };
 
     const { getByText } = await render(<FieldScreen />);
 
-    expect(Redirect).not.toHaveBeenCalled();
-    expect(getByText('Field Mode')).toBeTruthy();
-    expect(getByText(/has not yet been authored/)).toBeTruthy();
+    expect(getByText('The Field Challenge')).toBeTruthy();
+    expect(getByText(/Safety gate: Enhanced Field Gate/)).toBeTruthy();
   });
 
   it('records a "completed" outcome and moves to review when Complete is pressed', async () => {

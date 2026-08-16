@@ -59,4 +59,26 @@ describe('SafetyAcceptanceScreen', () => {
     expect(mockAcceptSafety).toHaveBeenCalledTimes(1);
     expect(router.replace).toHaveBeenCalledWith('/home');
   });
+
+  it('names the real Challenge and makes explicit that this generic acceptance is not challenge-specific verification', async () => {
+    (useLocalSearchParams as jest.Mock).mockReturnValue({
+      returnTo: '/challenge/desert-foundations-challenge-1/field',
+      challengeId: 'desert-foundations-challenge-1',
+    });
+
+    const { getByText } = await render(<SafetyAcceptanceScreen />);
+
+    expect(getByText(/You are about to enter Field Mode for: First Read/)).toBeTruthy();
+    expect(
+      getByText(/does not mean the field or safety content for this specific challenge has been/)
+    ).toBeTruthy();
+  });
+
+  it('shows no challenge-specific caveat when no challengeId is provided', async () => {
+    (useLocalSearchParams as jest.Mock).mockReturnValue({ returnTo: '/home' });
+
+    const { queryByText } = await render(<SafetyAcceptanceScreen />);
+
+    expect(queryByText(/You are about to enter Field Mode for:/)).toBeNull();
+  });
 });
