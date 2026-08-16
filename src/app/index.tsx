@@ -1,13 +1,14 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
+import { colors } from '@/design/tokens';
 
+// Uses the approved fixed BADAWI semantic colors. BADAWI V1 is light-mode
+// only — see docs/design/README.md, "Appearance Mode".
 export default function HomeScreen() {
   return (
-    <ThemedView style={styles.container}>
-      <ThemedText type="title">BADAWI</ThemedText>
-    </ThemedView>
+    <View style={styles.container}>
+      <Text style={styles.title}>BADAWI</Text>
+    </View>
   );
 }
 
@@ -16,5 +17,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: colors.background,
+  },
+  title: {
+    color: colors.textPrimary,
+    fontSize: 48,
+    fontWeight: 600,
+    lineHeight: 52,
+    textAlign: 'center',
   },
 });
