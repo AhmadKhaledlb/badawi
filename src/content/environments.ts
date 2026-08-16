@@ -9,3 +9,7 @@ export const desertEnvironment: Environment = {
   regionId: arabianPeninsulaRegion.id,
   name: 'Desert',
 };
+
+export function findEnvironmentById(id: string): Environment | undefined {
+  return desertEnvironment.id === id ? desertEnvironment : undefined;
+}

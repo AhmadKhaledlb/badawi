@@ -9,3 +9,7 @@ export const desertFoundationsPack: Pack = {
   environmentId: desertEnvironment.id,
   name: 'Desert Foundations',
 };
+
+export function findPackById(id: string): Pack | undefined {
+  return desertFoundationsPack.id === id ? desertFoundationsPack : undefined;
+}
