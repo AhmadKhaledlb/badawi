@@ -145,6 +145,15 @@ Measure before introducing complex performance architecture.
 
 Do not prematurely optimize hypothetical bottlenecks.
 
+## Environment & Configuration
+
+- `app.json` remains the current static Expo application configuration source.
+- `EXPO_PUBLIC_*` variables are bundled into the client and are client-visible; they must never contain secrets.
+- Secrets and credentials must never be committed to source control.
+- Environment-specific variables should only be introduced when an actual implementation need exists, not speculatively.
+- Once environment variables are required, `.env.example` should document the required variable names only, with no real secret values.
+- Dynamic app config (`app.config.js`/`app.config.ts`), EAS configuration, or environment-specific build profiles should be introduced only when required by an actual implementation need.
+
 ## Stop & Escalate
 
 Stop rather than guessing when encountering:
