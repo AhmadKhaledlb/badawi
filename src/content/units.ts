@@ -22,3 +22,7 @@ export const units: Unit[] = Array.from({ length: V1_UNIT_COUNT }, (_, index) =>
 export function findUnitsForPack(packId: string): Unit[] {
   return units.filter((unit) => unit.packId === packId);
 }
+
+export function findUnitById(id: string): Unit | undefined {
+  return units.find((unit) => unit.id === id);
+}

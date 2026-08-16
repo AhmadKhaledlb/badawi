@@ -29,3 +29,9 @@ export const unresolvedChallengePlaceholders: UnresolvedChallengePlaceholder[] =
     };
   }
 );
+
+export function findUnresolvedChallengePlaceholderById(
+  id: string
+): UnresolvedChallengePlaceholder | undefined {
+  return unresolvedChallengePlaceholders.find((placeholder) => placeholder.id === id);
+}

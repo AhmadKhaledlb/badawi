@@ -5,6 +5,7 @@ import {
   findEnvironmentById,
   findPackById,
   findRegionById,
+  findUnitById,
   findUnitsForPack,
   units,
   V1_UNIT_COUNT,
@@ -35,5 +36,12 @@ describe('content lookup helpers', () => {
 
   it('findUnitsForPack returns an empty array for an unrecognized pack', () => {
     expect(findUnitsForPack('not-a-real-pack')).toEqual([]);
+  });
+
+  it('findUnitById finds a known unit by id and returns undefined otherwise', () => {
+    const [firstUnit] = units;
+
+    expect(findUnitById(firstUnit.id)).toBe(firstUnit);
+    expect(findUnitById('not-a-real-unit')).toBeUndefined();
   });
 });

@@ -8,3 +8,7 @@ import type { Challenge } from '@/domain/challenge';
 // placeholders — see unresolved-challenge-placeholders.ts — until real
 // curriculum content and unit assignments are authored.
 export const challenges: Challenge[] = [];
+
+export function findChallengeById(id: string): Challenge | undefined {
+  return challenges.find((challenge) => challenge.id === id);
+}
