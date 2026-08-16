@@ -5,7 +5,7 @@ import { ActionButton } from '@/components/action-button';
 import { BackLink } from '@/components/back-link';
 import { ScreenContainer } from '@/components/screen-container';
 import { TextLink } from '@/components/text-link';
-import { resolveChallenge } from '@/content';
+import { findChallengeById } from '@/content';
 import { colors } from '@/design/tokens';
 import { useProgress } from '@/state/progress-context';
 
@@ -16,7 +16,7 @@ import { useProgress } from '@/state/progress-context';
 // competence and must never read as failure.
 export default function ChallengePrepareScreen() {
   const { challengeId } = useLocalSearchParams<{ challengeId: string }>();
-  const challenge = resolveChallenge(challengeId);
+  const challenge = findChallengeById(challengeId);
   const { recordChallengeAttempt } = useProgress();
 
   if (!challenge) {

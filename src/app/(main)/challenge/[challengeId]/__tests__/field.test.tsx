@@ -28,7 +28,7 @@ jest.mock('@/state/progress-context', () => ({
 
 describe('ChallengeFieldScreen (Field Mode)', () => {
   beforeEach(() => {
-    (useLocalSearchParams as jest.Mock).mockReturnValue({ challengeId: 'challenge-placeholder-1' });
+    (useLocalSearchParams as jest.Mock).mockReturnValue({ challengeId: 'desert-foundations-challenge-1' });
   });
 
   afterEach(() => {
@@ -55,7 +55,7 @@ describe('ChallengeFieldScreen (Field Mode)', () => {
       expect.objectContaining({
         href: {
           pathname: '/safety/acceptance',
-          params: { returnTo: '/challenge/challenge-placeholder-1/field' },
+          params: { returnTo: '/challenge/desert-foundations-challenge-1/field' },
         },
       })
     );
@@ -80,10 +80,10 @@ describe('ChallengeFieldScreen (Field Mode)', () => {
 
     fireEvent.press(getByText('Complete'));
 
-    expect(mockRecordChallengeAttempt).toHaveBeenCalledWith('challenge-placeholder-1', 'completed');
+    expect(mockRecordChallengeAttempt).toHaveBeenCalledWith('desert-foundations-challenge-1', 'completed');
     expect(router.replace).toHaveBeenCalledWith({
       pathname: '/challenge/[challengeId]/review',
-      params: { challengeId: 'challenge-placeholder-1' },
+      params: { challengeId: 'desert-foundations-challenge-1' },
     });
   });
 
@@ -95,10 +95,10 @@ describe('ChallengeFieldScreen (Field Mode)', () => {
 
     fireEvent.press(getByText('Stop'));
 
-    expect(mockRecordChallengeAttempt).toHaveBeenCalledWith('challenge-placeholder-1', 'stopped');
+    expect(mockRecordChallengeAttempt).toHaveBeenCalledWith('desert-foundations-challenge-1', 'stopped');
     expect(router.replace).toHaveBeenCalledWith({
       pathname: '/challenge/[challengeId]/review',
-      params: { challengeId: 'challenge-placeholder-1' },
+      params: { challengeId: 'desert-foundations-challenge-1' },
     });
   });
 

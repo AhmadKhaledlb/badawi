@@ -4,7 +4,7 @@ import { BackHandler, StyleSheet, Text, View } from 'react-native';
 
 import { ActionButton } from '@/components/action-button';
 import { ScreenContainer } from '@/components/screen-container';
-import { resolveChallenge } from '@/content';
+import { findChallengeById } from '@/content';
 import { colors } from '@/design/tokens';
 import { useProgress } from '@/state/progress-context';
 
@@ -21,7 +21,7 @@ import { useProgress } from '@/state/progress-context';
 // only removes the *generic* exit in favor of the two explicit ones.
 export default function ChallengeFieldScreen() {
   const { challengeId } = useLocalSearchParams<{ challengeId: string }>();
-  const challenge = resolveChallenge(challengeId);
+  const challenge = findChallengeById(challengeId);
   const { progress, isHydrated, recordChallengeAttempt } = useProgress();
 
   const isFieldModeActive = isHydrated && Boolean(progress.safetyAcceptedAt) && Boolean(challenge);
