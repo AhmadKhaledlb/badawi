@@ -1,27 +1,15 @@
-// Structural theme primitives consumed by the shared themed components.
-// Placeholder values only — not the locked BADAWI design system.
+// Structural theme primitives consumed by shared components.
+// The Fonts mapping below is a temporary structural implementation value
+// only — it is NOT the locked BADAWI design system (typography is not yet
+// approved; see docs/design/README.md).
+//
+// The old light/dark Colors mapping that used to live here has been
+// retired: BADAWI V1 is light-mode only (docs/design/README.md,
+// "Appearance Mode"), and colors are now sourced from the approved
+// semantic tokens in src/design/tokens/.
 import '@/global.css';
 
 import { Platform } from 'react-native';
-
-export const Colors = {
-  light: {
-    text: '#000000',
-    background: '#ffffff',
-    backgroundElement: '#F0F0F3',
-    backgroundSelected: '#E0E1E6',
-    textSecondary: '#60646C',
-  },
-  dark: {
-    text: '#ffffff',
-    background: '#000000',
-    backgroundElement: '#212225',
-    backgroundSelected: '#2E3135',
-    textSecondary: '#B0B4BA',
-  },
-} as const;
-
-export type ThemeColor = keyof typeof Colors.light & keyof typeof Colors.dark;
 
 export const Fonts = Platform.select({
   ios: {
