@@ -1,7 +1,10 @@
 import {
   arabianPeninsulaRegion,
+  challenges,
   desertEnvironment,
   desertFoundationsPack,
+  findChallengeById,
+  findChallengesForUnit,
   findEnvironmentById,
   findPackById,
   findRegionById,
@@ -43,5 +46,27 @@ describe('content lookup helpers', () => {
 
     expect(findUnitById(firstUnit.id)).toBe(firstUnit);
     expect(findUnitById('not-a-real-unit')).toBeUndefined();
+  });
+
+  it('findChallengeById finds a known challenge by id and returns undefined otherwise', () => {
+    const [firstChallenge] = challenges;
+
+    expect(findChallengeById(firstChallenge.id)).toBe(firstChallenge);
+    expect(findChallengeById('not-a-real-challenge')).toBeUndefined();
+  });
+
+  it('findChallengesForUnit returns exactly the challenges belonging to the given unit, in order', () => {
+    const [firstUnit] = units;
+
+    const result = findChallengesForUnit(firstUnit.id);
+
+    expect(result.every((challenge) => challenge.unitId === firstUnit.id)).toBe(true);
+    expect(result.map((challenge) => challenge.order)).toEqual(
+      Array.from({ length: result.length }, (_, index) => index + 1)
+    );
+  });
+
+  it('findChallengesForUnit returns an empty array for an unrecognized unit', () => {
+    expect(findChallengesForUnit('not-a-real-unit')).toEqual([]);
   });
 });

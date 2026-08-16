@@ -4,7 +4,7 @@ import { StyleSheet, Text } from 'react-native';
 import { ActionButton } from '@/components/action-button';
 import { BackLink } from '@/components/back-link';
 import { ScreenContainer } from '@/components/screen-container';
-import { resolveChallenge } from '@/content';
+import { findChallengeById } from '@/content';
 import { colors } from '@/design/tokens';
 import type { ChallengeAttemptOutcome } from '@/state';
 import { useProgress } from '@/state/progress-context';
@@ -22,7 +22,7 @@ const OUTCOME_LABELS: Record<ChallengeAttemptOutcome, string> = {
 
 export default function ChallengeReviewScreen() {
   const { challengeId } = useLocalSearchParams<{ challengeId: string }>();
-  const challenge = resolveChallenge(challengeId);
+  const challenge = findChallengeById(challengeId);
   const { progress, isHydrated } = useProgress();
 
   if (!challenge) {

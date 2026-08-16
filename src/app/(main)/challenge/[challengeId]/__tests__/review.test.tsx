@@ -24,7 +24,7 @@ jest.mock('@/state/progress-context', () => ({
 
 describe('ChallengeReviewScreen', () => {
   beforeEach(() => {
-    (useLocalSearchParams as jest.Mock).mockReturnValue({ challengeId: 'challenge-placeholder-1' });
+    (useLocalSearchParams as jest.Mock).mockReturnValue({ challengeId: 'desert-foundations-challenge-1' });
   });
 
   afterEach(() => {
@@ -59,7 +59,7 @@ describe('ChallengeReviewScreen', () => {
     mockIsHydrated = true;
     mockProgress = {
       challenges: {
-        'challenge-placeholder-1': { outcome, updatedAt: '2026-01-01T00:00:00.000Z' },
+        'desert-foundations-challenge-1': { outcome, updatedAt: '2026-01-01T00:00:00.000Z' },
       },
     };
 
@@ -72,7 +72,7 @@ describe('ChallengeReviewScreen', () => {
     mockIsHydrated = true;
     mockProgress = {
       challenges: {
-        'challenge-placeholder-1': { outcome: 'completed', updatedAt: '2026-01-01T00:00:00.000Z' },
+        'desert-foundations-challenge-1': { outcome: 'completed', updatedAt: '2026-01-01T00:00:00.000Z' },
       },
     };
 

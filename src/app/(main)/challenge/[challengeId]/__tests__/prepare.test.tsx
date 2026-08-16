@@ -36,29 +36,29 @@ describe('ChallengePrepareScreen', () => {
   });
 
   it('records a "postponed" outcome — not a failure — and returns, when Postpone is pressed', async () => {
-    (useLocalSearchParams as jest.Mock).mockReturnValue({ challengeId: 'challenge-placeholder-1' });
+    (useLocalSearchParams as jest.Mock).mockReturnValue({ challengeId: 'desert-foundations-challenge-1' });
 
     const { getByText } = await render(<PrepareScreen />);
 
     fireEvent.press(getByText('Postpone'));
 
-    expect(mockRecordChallengeAttempt).toHaveBeenCalledWith('challenge-placeholder-1', 'postponed');
+    expect(mockRecordChallengeAttempt).toHaveBeenCalledWith('desert-foundations-challenge-1', 'postponed');
     expect(router.back).toHaveBeenCalledTimes(1);
   });
 
   it('records a "refused" outcome — not a failure — and returns, when Refuse is pressed', async () => {
-    (useLocalSearchParams as jest.Mock).mockReturnValue({ challengeId: 'challenge-placeholder-1' });
+    (useLocalSearchParams as jest.Mock).mockReturnValue({ challengeId: 'desert-foundations-challenge-1' });
 
     const { getByText } = await render(<PrepareScreen />);
 
     fireEvent.press(getByText('Refuse'));
 
-    expect(mockRecordChallengeAttempt).toHaveBeenCalledWith('challenge-placeholder-1', 'refused');
+    expect(mockRecordChallengeAttempt).toHaveBeenCalledWith('desert-foundations-challenge-1', 'refused');
     expect(router.back).toHaveBeenCalledTimes(1);
   });
 
   it('navigates to Field Mode when Continue is pressed, without recording an outcome', async () => {
-    (useLocalSearchParams as jest.Mock).mockReturnValue({ challengeId: 'challenge-placeholder-1' });
+    (useLocalSearchParams as jest.Mock).mockReturnValue({ challengeId: 'desert-foundations-challenge-1' });
 
     const { getByText } = await render(<PrepareScreen />);
 
@@ -66,7 +66,7 @@ describe('ChallengePrepareScreen', () => {
 
     expect(router.push).toHaveBeenCalledWith({
       pathname: '/challenge/[challengeId]/field',
-      params: { challengeId: 'challenge-placeholder-1' },
+      params: { challengeId: 'desert-foundations-challenge-1' },
     });
     expect(mockRecordChallengeAttempt).not.toHaveBeenCalled();
   });

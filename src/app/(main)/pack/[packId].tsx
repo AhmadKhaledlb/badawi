@@ -7,11 +7,9 @@ import { ScreenContainer } from '@/components/screen-container';
 import { findPackById, findUnitsForPack } from '@/content';
 import { colors } from '@/design/tokens';
 
-// Lists the 6 structural Unit placeholders honestly — each `unit.name`
-// already carries its own "(placeholder — name not yet authored)" wording
-// from the content layer, and is rendered as-is rather than dressed up as
-// authored curriculum. Tapping a unit navigates to the existing Unit
-// placeholder route; no real Unit screen is implemented here.
+// Lists the 6 authoritative V1 Units (docs/curriculum/v1-curriculum-spec.md
+// §6) by their working title. Tapping a unit navigates to the Unit route,
+// which in turn lists that unit's real, curriculum-assigned Challenges.
 export default function PackScreen() {
   const { packId } = useLocalSearchParams<{ packId: string }>();
   const pack = findPackById(packId);
@@ -31,9 +29,7 @@ export default function PackScreen() {
     <ScreenContainer>
       <BackLink onPress={() => router.back()} />
       <Text style={styles.heading}>{pack.name}</Text>
-      <Text style={styles.body}>
-        {units.length} structural unit placeholders — curriculum content is not yet authored.
-      </Text>
+      <Text style={styles.body}>{units.length} units — curriculum structure is locked.</Text>
       {units.map((unit) => (
         <ExplorationTile
           key={unit.id}

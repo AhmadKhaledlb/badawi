@@ -4,17 +4,18 @@ import { StyleSheet, Text } from 'react-native';
 import { ActionButton } from '@/components/action-button';
 import { BackLink } from '@/components/back-link';
 import { ScreenContainer } from '@/components/screen-container';
-import { resolveChallenge } from '@/content';
+import { findChallengeById } from '@/content';
 import { colors } from '@/design/tokens';
 
 // No challenge instructions, safety guidance, or cultural content are
 // authored yet for any challenge — this screen never invents them. It
 // only establishes the journey (name/id + a path to Preparation) and
-// honestly flags when the resolved challenge is a structural placeholder
-// rather than authored curriculum.
+// honestly notes that learner-facing content is still pending, even
+// though the challenge's curriculum structure and metadata are locked
+// (docs/curriculum/v1-curriculum-spec.md §8, §14).
 export default function ChallengeScreen() {
   const { challengeId } = useLocalSearchParams<{ challengeId: string }>();
-  const challenge = resolveChallenge(challengeId);
+  const challenge = findChallengeById(challengeId);
 
   if (!challenge) {
     return (
@@ -29,11 +30,10 @@ export default function ChallengeScreen() {
     <ScreenContainer>
       <BackLink onPress={() => router.back()} />
       <Text style={styles.heading}>{challenge.name}</Text>
-      {challenge.isPlaceholder && (
-        <Text style={styles.placeholderNote}>
-          Structural placeholder — curriculum content for this challenge has not yet been authored.
-        </Text>
-      )}
+      <Text style={styles.placeholderNote}>
+        Challenge structure and curriculum metadata are locked; learner-facing content has not yet
+        been authored.
+      </Text>
       <ActionButton
         label="Continue to Preparation"
         onPress={() =>
