@@ -1001,7 +1001,46 @@ Before learner-facing release: Claim verification ✓, Source traceability ✓, 
 4. Supporting Regional Context (geography, ecology, history).
 5. Optional Explore-More content (only after core is sound).
 
-### 11.10 Ten-rule Source Doctrine (2I.47, condensed)
+### 11.10 V1 Research Matrix — identified examples (2I.46)
+
+A dedicated matrix should derive research requirements from all 28
+Challenges. The Master gives named examples rather than a full 28-row
+table; per §16 extraction rules, only those named examples are reproduced
+below — the remaining Challenges are not assigned a Priority/Risk value
+here, and none should be invented (see also §15, item 1, the "Research
+Matrix" workstream, which is the eventual full-coverage exercise this table
+anticipates).
+
+| Challenge | Research need | Priority/Risk |
+|---|---|---|
+| Ch3 — Read the Invisible | Wind/sand/sun interpretation | Medium |
+| Ch6 — Follow the Shade | Solar/exposure principles | High |
+| Ch7 — Read the Conditions | Heat physiology | Critical |
+| Ch8 — Where Water Moves | Flash flooding/hydrology | Critical |
+| Ch9 — Water Shapes Life | Oasis/local water systems | High cultural |
+| Ch15–19 — Navigation | Navigation science + local knowledge | High |
+| Ch22 — Pace the Desert | Exertion/heat | Critical |
+| Ch27 — Field Challenge | Integrated safety systems | Critical |
+
+"High cultural" (Ch9) is a distinct value from plain "High" — the Master
+does not equate the two, so this document does not normalize them together
+(2I.46). The Master states Ch15–19 as a single range entry, not five
+individual per-Challenge values; this document preserves that as given
+rather than inventing an individual value per Challenge (§16 extraction
+rule: ambiguity is preserved, not silently resolved). This table is a
+separate axis from each Challenge's own inline "Source requirements" note
+in §8 (2F) — the two do not always use the same wording (e.g. Ch7's §8
+source-requirements note says "HIGH," while this Master-stated Research
+Matrix entry says "Critical") because they come from different parts of
+the Master and serve different purposes; neither overrides the other.
+
+**Provenance note (added after initial extraction):** this subsection was
+not present in the first pass of this document and was added in a later
+correction after being identified as an omission from the original
+~31,000-word Master. It is reproduced here as given, without independent
+verification beyond internal consistency with the rest of this document.
+
+### 11.11 Ten-rule Source Doctrine (2I.47, condensed)
 1. AI is a research tool, never an evidentiary source. 2. Every meaningful factual claim traces to supporting evidence. 3. Source quality matters more than citation count. 4. Claims must not exceed geographic/cultural/temporal/scientific scope. 5. Safety/medical claims require the highest verification standard. 6. Local/traditional knowledge is legitimate but must remain contextualized and attributed. 7. Historical authenticity does not establish modern safety. 8. Uncertainty/disagreement is disclosed, not hidden. 9. Time-sensitive information is reviewed/retrieved at a rate matching its change rate. 10. BADAWI corrects or disables content when evidence no longer supports it.
 
 Evidence ladder: **QUESTION → RESEARCH → VERIFY → CONTEXTUALIZE → REVIEW → PUBLISH → RECHECK.**
@@ -1179,3 +1218,6 @@ Every other Challenge (1–27) has an explicit "Source requirements" line in §2
 
 ### 16.4 Challenge 27 duration not hard-locked
 The Master explicitly states Challenge 27's estimated commitment ("likely 45–90 minutes") is *not* to be hard-locked until safety and implementation design are complete (§2F, Challenge 27). This is not an ambiguity to resolve — it is an intentionally open value; flagged here so it isn't mistaken for a firm spec during implementation.
+
+### 16.5 §11.10 (2I.46) added after initial extraction — not independently re-verified
+The first pass of this document omitted 2I.46 ("V1 Research Matrix after Phase 2"), which was later identified and added as §11.10. Unlike the rest of this document, that addition was not produced by re-reading the full Master end-to-end in this session — it was transcribed from the specific excerpt supplied at correction time. It is internally consistent with the rest of the Master as extracted here (its priority order restates §11.9/2I.45 exactly, and its companion 2I.47 excerpt matches the already-extracted §11.11 word-for-sense), which is why it was accepted, but if the Master is ever re-read in full, §11.10 specifically should be the first section double-checked against the original.

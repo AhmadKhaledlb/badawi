@@ -5,3 +5,5 @@ export { findUnitById, findUnitsForPack, units, V1_UNIT_COUNT } from './units';
 export { challenges, findChallengeById, findChallengesForUnit, V1_CHALLENGE_COUNT } from './challenges';
 export { checkV1Integrity, challengeReferencesValidUnit } from './integrity';
 export type { V1IntegrityResult } from './integrity';
+export { RESEARCH_MATRIX, findResearchMatrixEntry } from './research-matrix';
+export type { DerivedPriorityTierId, ExplicitResearchMatrixPriority, ResearchMatrixEntry } from './research-matrix';
