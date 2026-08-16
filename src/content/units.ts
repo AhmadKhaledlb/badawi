@@ -18,3 +18,7 @@ export const units: Unit[] = Array.from({ length: V1_UNIT_COUNT }, (_, index) =>
     order,
   };
 });
+
+export function findUnitsForPack(packId: string): Unit[] {
+  return units.filter((unit) => unit.packId === packId);
+}

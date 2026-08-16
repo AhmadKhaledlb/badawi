@@ -1,29 +1,20 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Redirect } from 'expo-router';
 
-import { colors } from '@/design/tokens';
+import { useProgress } from '@/state/progress-context';
 
-// Uses the approved fixed BADAWI semantic colors. BADAWI V1 is light-mode
-// only — see docs/design/README.md, "Appearance Mode".
-export default function HomeScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>BADAWI</Text>
-    </View>
-  );
+// Entry routing only — reads existing persisted onboarding-completion
+// state to decide where "/" lands. This is not a progression/auth guard:
+// no challenge/unit unlocking or safety gating happens here.
+// docs/product/README.md, "Core Experience Areas".
+export default function Index() {
+  const { progress, isHydrated } = useProgress();
+
+  // Hydration is a quick local read; render nothing rather than decide
+  // from the still-default in-memory state, so a returning user with
+  // completed onboarding isn't briefly (and incorrectly) sent to /welcome.
+  if (!isHydrated) {
+    return null;
+  }
+
+  return <Redirect href={progress.onboardingCompletedAt ? '/home' : '/welcome'} />;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: colors.background,
-  },
-  title: {
-    color: colors.textPrimary,
-    fontSize: 48,
-    fontWeight: 600,
-    lineHeight: 52,
-    textAlign: 'center',
-  },
-});

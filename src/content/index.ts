@@ -1,7 +1,7 @@
-export { arabianPeninsulaRegion } from './region';
-export { desertEnvironment } from './environments';
-export { desertFoundationsPack } from './packs';
-export { units, V1_UNIT_COUNT } from './units';
+export { arabianPeninsulaRegion, findRegionById } from './region';
+export { desertEnvironment, findEnvironmentById } from './environments';
+export { desertFoundationsPack, findPackById } from './packs';
+export { findUnitsForPack, units, V1_UNIT_COUNT } from './units';
 export { challenges } from './challenges';
 export {
   unresolvedChallengePlaceholders,

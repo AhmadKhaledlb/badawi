@@ -6,3 +6,7 @@ export const arabianPeninsulaRegion: Region = {
   id: 'arabian-peninsula',
   name: 'Arabian Peninsula',
 };
+
+export function findRegionById(id: string): Region | undefined {
+  return arabianPeninsulaRegion.id === id ? arabianPeninsulaRegion : undefined;
+}
