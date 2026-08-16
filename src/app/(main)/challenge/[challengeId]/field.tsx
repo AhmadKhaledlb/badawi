@@ -3,16 +3,25 @@ import { useEffect } from 'react';
 import { BackHandler, StyleSheet, Text, View } from 'react-native';
 
 import { ActionButton } from '@/components/action-button';
+import { ContentStatusNote } from '@/components/content-status-note';
 import { ScreenContainer } from '@/components/screen-container';
 import { findChallengeById } from '@/content';
 import { colors } from '@/design/tokens';
+import { SAFETY_GATE_CLASSES } from '@/domain';
 import { useProgress } from '@/state/progress-context';
 
 // Field Mode: minimal interaction, no decorative engagement, no
 // unnecessary prompts/animations (docs/design/README.md, "Field Mode").
-// No field/survival instruction is authored yet for any challenge, so
-// this is a functional structural shell that says so plainly rather than
-// fabricating guidance (docs/safety/README.md, "Safety-Critical Content").
+// The screen is driven by the real Challenge's identity, but no
+// field/survival instruction exists yet for any challenge (every V1
+// Challenge is research status RQ0 — see src/domain/research-status.ts),
+// so this remains a functional shell that says so plainly via
+// ContentStatusNote rather than fabricating guidance
+// (docs/safety/README.md, "Safety-Critical Content"). The Challenge's
+// internal `safetyNote` (src/domain/challenge.ts) is NOT rendered here —
+// it is unreviewed engineering metadata, not approved learner-facing
+// safety wording; only the coded safety-gate class (set only for
+// Challenge 27) is shown, structurally.
 //
 // Locked navigation decision: there is no generic Back while Field Mode
 // is active — no in-UI Back affordance, no Android hardware back, no iOS
@@ -44,7 +53,7 @@ export default function ChallengeFieldScreen() {
       <Redirect
         href={{
           pathname: '/safety/acceptance',
-          params: { returnTo: `/challenge/${challengeId}/field` },
+          params: { returnTo: `/challenge/${challengeId}/field`, challengeId: challengeId ?? '' },
         }}
       />
     );
@@ -79,10 +88,16 @@ export default function ChallengeFieldScreen() {
       <Stack.Screen options={{ gestureEnabled: false }} />
       <ScreenContainer>
         <Text style={styles.heading}>Field Mode</Text>
-        <Text style={styles.body}>
-          Field content for this challenge has not yet been authored. This is a structural
-          placeholder for the Field Mode experience.
-        </Text>
+        <Text style={styles.subheading}>{challenge.name}</Text>
+
+        {challenge.safetyGateClass && (
+          <Text style={styles.meta}>
+            Safety gate: {SAFETY_GATE_CLASSES[challenge.safetyGateClass]}.
+          </Text>
+        )}
+
+        <ContentStatusNote researchStatus={challenge.researchStatus} area="field" />
+
         <View style={styles.actions}>
           <ActionButton label="Complete" onPress={handleComplete} />
           <ActionButton label="Stop" onPress={handleStop} />
@@ -98,9 +113,14 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 600,
   },
-  body: {
+  subheading: {
+    color: colors.textPrimary,
+    fontSize: 18,
+    fontWeight: 600,
+  },
+  meta: {
     color: colors.textSecondary,
-    fontSize: 16,
+    fontSize: 14,
   },
   actions: {
     marginTop: 8,

@@ -3,17 +3,22 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { ActionButton } from '@/components/action-button';
 import { BackLink } from '@/components/back-link';
+import { ContentStatusNote } from '@/components/content-status-note';
 import { ScreenContainer } from '@/components/screen-container';
 import { TextLink } from '@/components/text-link';
 import { findChallengeById } from '@/content';
 import { colors } from '@/design/tokens';
+import { SAFETY_GATE_CLASSES } from '@/domain';
 import { useProgress } from '@/state/progress-context';
 
 // No preparation guidance/checklist content is authored yet for any
-// challenge — nothing is fabricated to fill this screen. Postponing and
-// refusing are presented as equally ordinary choices to continuing, per
-// docs/safety/README.md: stopping/postponing/refusing may demonstrate
-// competence and must never read as failure.
+// challenge (curriculum spec §8 does not yet carry researched, safety-
+// reviewed field-preparation content — see ContentStatusNote) — nothing is
+// fabricated to fill this screen. The Challenge's own working objective
+// is shown as honest context. Postponing and refusing are presented as
+// equally ordinary choices to continuing, per docs/safety/README.md:
+// stopping/postponing/refusing may demonstrate competence and must never
+// read as failure.
 export default function ChallengePrepareScreen() {
   const { challengeId } = useLocalSearchParams<{ challengeId: string }>();
   const challenge = findChallengeById(challengeId);
@@ -42,9 +47,20 @@ export default function ChallengePrepareScreen() {
     <ScreenContainer>
       <BackLink onPress={() => router.back()} />
       <Text style={styles.heading}>Prepare: {challenge.name}</Text>
+      <Text style={styles.body}>{challenge.objective}</Text>
+
+      {challenge.safetyGateClass && (
+        <Text style={styles.meta}>
+          Curriculum safety gate: {SAFETY_GATE_CLASSES[challenge.safetyGateClass]} — extra caution
+          is expected. Detailed, reviewed safety requirements for it have not yet been authored.
+        </Text>
+      )}
+
+      <ContentStatusNote researchStatus={challenge.researchStatus} area="preparation" />
+
       <Text style={styles.body}>
-        Preparation guidance for this challenge has not yet been authored. Continue only when you
-        judge yourself ready — postponing or refusing are both reasonable choices here.
+        Continue only when you judge yourself ready — postponing or refusing are both reasonable
+        choices here.
       </Text>
 
       <View style={styles.actions}>
@@ -75,6 +91,10 @@ const styles = StyleSheet.create({
   body: {
     color: colors.textSecondary,
     fontSize: 16,
+  },
+  meta: {
+    color: colors.textSecondary,
+    fontSize: 14,
   },
   actions: {
     marginTop: 8,
