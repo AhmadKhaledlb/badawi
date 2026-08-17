@@ -1,28 +1,42 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import Animated from 'react-native-reanimated';
 
 import { ActionButton } from '@/components/action-button';
-import { BackLink } from '@/components/back-link';
 import { OUTCOME_LABELS } from '@/components/challenge-outcome-labels';
 import { ContentStatusNote } from '@/components/content-status-note';
+import { NoticePlate } from '@/components/notice-plate';
+import { Plate } from '@/components/plate';
+import { Screen } from '@/components/screen';
+import { ScreenHeader } from '@/components/screen-header';
+import { BodyText, Eyebrow, MetaText, Ordinal } from '@/components/section-heading';
 import { TextLink } from '@/components/text-link';
-import { ScreenContainer } from '@/components/screen-container';
 import { findChallengeById, findUnitById } from '@/content';
-import { colors } from '@/design/tokens';
+import { HairlineRule } from '@/design/illustration/notebook';
+import { TerrainWindow } from '@/design/illustration/terrain-scene';
+import { colors, contentEnter, spacing, staggeredEnter, typography } from '@/design/tokens';
 import { SAFETY_GATE_CLASSES } from '@/domain';
 import type { Challenge } from '@/domain/challenge';
 import type { Unit } from '@/domain/unit';
 import { useProgress } from '@/state/progress-context';
 
-// Drives the Challenge screen from the real Challenge dataset (spec §8).
-// `objective` is the spec's own "Learner-facing objective" (WORKING copy —
-// see src/domain/content-status.ts); `purpose` is LOCKED specification
-// text shown plainly as restrained framing, not polished learner copy.
-// Prerequisites are shown for orientation only — this app does not block
-// navigation on them (spec §16; 5C.1 deliberately did not establish a
-// runtime "every prior Challenge must be complete" gate, and this pass
-// does not invent one either). No safety instructions, field tasks, or
-// taxonomy codes (C1, EVM2, ...) are exposed here.
+// ── CHALLENGE — THE FIELD CARD ───────────────────────────────────────────
+//
+// A single challenge presented as a field card: a shallow terrain window
+// establishes place, and an overlapping paper plate carries the learner-facing
+// objective set large in the display serif, with the locked purpose beneath as
+// quieter framing. Supporting material — safety gate, curriculum context,
+// prior attempt, pending-content notice — reads down the page as annotations
+// on that card rather than as more cards of equal weight.
+//
+// ── UNCHANGED FROM THE PREVIOUS IMPLEMENTATION (deliberately) ────────────
+// `objective` is the spec's own "Learner-facing objective" (WORKING copy);
+// `purpose` is LOCKED specification text shown plainly, not dressed up as
+// polished learner copy. Prerequisites are shown for ORIENTATION ONLY — this
+// app does not block navigation on them (spec §16), and this pass does not
+// invent a gate. No safety instructions, field tasks, or taxonomy codes
+// (C1, EVM2, RK1, RQ0 …) are exposed. All of that is behaviour, and none of
+// it changed; only its presentation did.
 export default function ChallengeScreen() {
   const { challengeId } = useLocalSearchParams<{ challengeId: string }>();
   const challenge = findChallengeById(challengeId);
@@ -30,12 +44,13 @@ export default function ChallengeScreen() {
 
   if (!challenge) {
     return (
-      <ScreenContainer>
-        <BackLink onPress={() => router.back()} />
-        <Text style={styles.heading}>Challenge not found</Text>
-      </ScreenContainer>
+      <Screen>
+        <ScreenHeader title="Challenge not found" onBack={() => router.back()} />
+      </Screen>
     );
   }
+
+  const unit = findUnitById(challenge.unitId);
 
   const prerequisiteChallenges = challenge.prerequisiteChallengeIds
     .map(findChallengeById)
@@ -49,78 +64,130 @@ export default function ChallengeScreen() {
   const recorded = isHydrated ? progress.challenges[challenge.id] : undefined;
 
   return (
-    <ScreenContainer>
-      <BackLink onPress={() => router.back()} />
-      <Text style={styles.heading}>{challenge.name}</Text>
-      <Text style={styles.objective}>{challenge.objective}</Text>
-      <Text style={styles.body}>{challenge.purpose}</Text>
+    <Screen measure="reading" backdropHeight={250}>
+      <ScreenHeader
+        title={challenge.name}
+        // Only the parent Unit. The challenge's own name is the title and is
+        // asserted to appear exactly once by the screen tests.
+        trail={unit ? [unit.name] : undefined}
+        onBack={() => router.back()}
+        rule={false}
+      />
+
+      <Animated.View entering={contentEnter} style={styles.card}>
+        <TerrainWindow atmosphere="day" height={128} cornerMarks={false} />
+        <Plate variant="paper" elevated style={styles.cardPlate}>
+          <View style={styles.cardHead}>
+            <Ordinal value={challenge.order} size="md" accent />
+            <Eyebrow>{`Challenge ${String(challenge.order).padStart(2, '0')}`}</Eyebrow>
+          </View>
+          <Text style={styles.objective}>{challenge.objective}</Text>
+          <HairlineRule weight="faint" />
+          <BodyText>{challenge.purpose}</BodyText>
+        </Plate>
+      </Animated.View>
 
       {challenge.safetyGateClass && (
-        <Text style={styles.meta}>
-          Curriculum safety gate: {SAFETY_GATE_CLASSES[challenge.safetyGateClass]}.
-        </Text>
+        <Animated.View entering={staggeredEnter(1)}>
+          <NoticePlate kicker="Safety gate">
+            {`Curriculum safety gate: ${SAFETY_GATE_CLASSES[challenge.safetyGateClass]}.`}
+          </NoticePlate>
+        </Animated.View>
       )}
 
       {hasPrerequisiteInfo && (
-        <Text style={styles.meta}>
-          Builds on:{' '}
-          {[
-            ...prerequisiteUnits.map((unit) => unit.name),
-            ...prerequisiteChallenges.map((prerequisite) => prerequisite.name),
-            challenge.prerequisiteNote,
-          ]
-            .filter(Boolean)
-            .join(', ')}
-          . This is curriculum context, not a requirement to proceed.
-        </Text>
+        <Animated.View entering={staggeredEnter(2)}>
+          <Plate variant="warm" style={styles.context}>
+            <Eyebrow>Curriculum context</Eyebrow>
+            <MetaText>
+              {`Builds on: ${[
+                ...prerequisiteUnits.map((prerequisiteUnit) => prerequisiteUnit.name),
+                ...prerequisiteChallenges.map((prerequisite) => prerequisite.name),
+                challenge.prerequisiteNote,
+              ]
+                .filter(Boolean)
+                .join(', ')}. This is curriculum context, not a requirement to proceed.`}
+            </MetaText>
+          </Plate>
+        </Animated.View>
       )}
 
       {recorded && (
-        <Text style={styles.meta}>Last attempt: {OUTCOME_LABELS[recorded.outcome]}.</Text>
+        <Animated.View entering={staggeredEnter(3)} style={styles.lastAttempt}>
+          <View style={styles.lastAttemptMark} />
+          <MetaText>{`Last attempt: ${OUTCOME_LABELS[recorded.outcome]}.`}</MetaText>
+        </Animated.View>
       )}
 
-      <ContentStatusNote researchStatus={challenge.researchStatus} area="task and safety" />
+      <Animated.View entering={staggeredEnter(4)}>
+        <ContentStatusNote researchStatus={challenge.researchStatus} area="task and safety" />
+      </Animated.View>
 
-      <ActionButton
-        label="Continue to Preparation"
-        onPress={() =>
-          router.push({
-            pathname: '/challenge/[challengeId]/prepare',
-            params: { challengeId: challenge.id },
-          })
-        }
-      />
-      {recorded && (
-        <TextLink
-          label="View last review"
+      <Animated.View entering={staggeredEnter(5)} style={styles.actions}>
+        <ActionButton
+          label="Continue to Preparation"
           onPress={() =>
             router.push({
-              pathname: '/challenge/[challengeId]/review',
+              pathname: '/challenge/[challengeId]/prepare',
               params: { challengeId: challenge.id },
             })
           }
         />
-      )}
-    </ScreenContainer>
+        {recorded && (
+          <TextLink
+            label="View last review"
+            onPress={() =>
+              router.push({
+                pathname: '/challenge/[challengeId]/review',
+                params: { challengeId: challenge.id },
+              })
+            }
+          />
+        )}
+      </Animated.View>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  heading: {
-    color: colors.textPrimary,
-    fontSize: 32,
-    fontWeight: 600,
+  card: {
+    gap: 0,
+  },
+  cardPlate: {
+    marginTop: -44,
+    marginHorizontal: spacing.md,
+    gap: spacing.md,
+  },
+  cardHead: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
   },
   objective: {
+    ...typography.heading,
     color: colors.textPrimary,
-    fontSize: 18,
   },
-  body: {
-    color: colors.textSecondary,
-    fontSize: 16,
+  context: {
+    gap: spacing.sm,
   },
-  meta: {
-    color: colors.textSecondary,
-    fontSize: 14,
+  lastAttempt: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+    paddingHorizontal: spacing.xs,
+  },
+  // A plotted survey dot rather than a status colour: an attempt outcome is a
+  // neutral record, never a good/bad signal (docs/safety/README.md).
+  lastAttemptMark: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: colors.textSecondary,
+    opacity: 0.5,
+  },
+  actions: {
+    gap: spacing.md,
+    marginTop: spacing.xs,
+    alignItems: 'stretch',
   },
 });
