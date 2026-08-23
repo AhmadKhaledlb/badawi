@@ -18,6 +18,21 @@ Region → Environment → Pack → Unit → Challenge
 
 READ → UNDERSTAND → PREPARE → ORIENT → MOVE → INTEGRATE
 
+### Unit → Arc Stage Mapping (locked)
+
+Phase 5A locks the following 1:1 mapping between the six V1 Units (`src/content/units.ts`, ordered 1–6) and the six arc stages above, for presentation purposes (e.g. Home's progress treatment):
+
+| Unit order | Unit | Arc stage |
+|---|---|---|
+| 1 | Reading the Desert | READ |
+| 2 | Heat, Weather & Water | UNDERSTAND |
+| 3 | Preparing for the Field | PREPARE |
+| 4 | Orientation & Navigation | ORIENT |
+| 5 | Moving With the Desert | MOVE |
+| 6 | Desert Field Integration | INTEGRATE |
+
+This is an intentional, approved decision, not an implementation inference — treat `Unit.order` as authoritative for deriving a Unit's arc stage rather than re-deriving it per screen. No new field was added to the `Unit` domain type to store this: the mapping is positional (`order` 1–6 ↔ stage 1–6) and this table is the single documented source of that positional meaning, so implementation doesn't need — and must not add — a duplicate `arcStage` field on `Unit` just to re-express what `order` already encodes.
+
 ## Core Competency Loop
 
 OBSERVE → REASON → ACT → ADAPT → REFLECT
