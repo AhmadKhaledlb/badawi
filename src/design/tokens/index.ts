@@ -32,5 +32,4 @@ export {
   pressScale,
   staggeredEnter,
   terrainSettle,
-  waypointEnter,
 } from './motion';

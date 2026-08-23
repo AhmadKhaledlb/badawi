@@ -31,8 +31,8 @@ type ContentStatusNoteProps = {
 // component was deliberately pushed the other way: it is the only surface in
 // BADAWI that uses a DASHED, unfilled plate and a hatched "unsurveyed" glyph.
 // In the map language the whole app now speaks, dashed + hatched means
-// "territory not yet surveyed" — the same treatment as the unsurveyed
-// regions on the Blueprint Map. A learner reads it as provisional before
+// "territory not yet surveyed" — the same treatment Explore/Region use for
+// in-preparation environments. A learner reads it as provisional before
 // reading a word of it.
 //
 // The wording below is unchanged from the previous implementation and is
@@ -111,11 +111,11 @@ const styles = StyleSheet.create({
     opacity: 0.7 + lineOpacity.faint,
   },
   note: {
-    // Fraunces italic at meta size. Uses the BUNDLED italic face rather than
-    // `fontStyle: 'italic'` on the sans, which would ask the platform to
-    // synthesise a slanted Archivo (no Archivo italic is bundled — see
-    // src/design/tokens/fonts.ts) and render differently on each OS.
-    fontFamily: fontFamily.displayRegularItalic,
+    // Alegreya Italic at meta size — BADAWI's one real bundled italic face
+    // (src/design/tokens/fonts.ts). Young Serif is upright only and must
+    // never get a synthetic `fontStyle: 'italic'` override, which would ask
+    // the platform to fake a slant and render differently on each OS.
+    fontFamily: fontFamily.accentItalic,
     fontSize: typography.meta.fontSize,
     lineHeight: typography.meta.lineHeight,
     color: colors.textSecondary,

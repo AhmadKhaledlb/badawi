@@ -12,7 +12,7 @@ type HeadingProps = TextProps & { children: string; onDeep?: boolean };
 // the verified light-on-Indigo pairing instead of leaving each screen to
 // remember that Brown on Indigo is 1.03:1.
 
-/** The screen title. Fraunces 600. One per screen. */
+/** The screen title. Young Serif. One per screen. */
 export function ScreenHeading({ style, onDeep, ...props }: HeadingProps) {
   return (
     <Text
@@ -23,7 +23,7 @@ export function ScreenHeading({ style, onDeep, ...props }: HeadingProps) {
   );
 }
 
-/** A section heading within a screen. Fraunces 600, smaller than the title. */
+/** A section heading within a screen. Young Serif, smaller than the title. */
 export function SectionTitle({ style, onDeep, ...props }: HeadingProps) {
   return (
     <Text
@@ -43,7 +43,7 @@ export function Eyebrow({ style, onDeep, ...props }: HeadingProps) {
 }
 
 /**
- * The pull-quote voice, in italic Fraunces. Reserved for a Unit's LOCKED
+ * The pull-quote voice, in italic Alegreya. Reserved for a Unit's LOCKED
  * `coreQuestion` — the italic serif deliberately marks it as quoted
  * specification framing rather than an instruction to the learner
  * (docs/curriculum/v1-curriculum-spec.md §14).
@@ -75,13 +75,20 @@ type OrdinalProps = {
  * A drawn ordinal — a Unit's or Challenge's position, treated as map
  * typography rather than body copy.
  *
- * `accent` is permitted here and NOWHERE else in text, because both ordinal
- * sizes clear the WCAG large-text threshold: `md` is 20px Fraunces 700 and
- * `lg` is 40px Fraunces 700, and Terracotta on Light Neutral measures 4.39:1
- * — above the 3:1 required for text at ≥18.66px bold. Do not reuse this
- * escape hatch at body size.
+ * `accent` is permitted here and NOWHERE else in text, but ONLY at `lg`
+ * (40px) — the sole size that reliably clears the WCAG large-text
+ * threshold now that the display voice is Young Serif, which ships no bold
+ * weight at all (src/design/tokens/typography.ts). "Large text" requires
+ * either ≥24px regular or ≥18.66px bold; `lg` clears the former on point
+ * size alone, but `md` (20px) clears neither now that bold isn't
+ * available, so it would need the full 4.5:1 normal-text threshold —
+ * Terracotta-on-Light-Neutral measures 4.39:1, just under that bar. Rather
+ * than trust every call site to know this, the component itself ignores
+ * `accent` at `md` and always renders `textPrimary` (10.43:1) there; `lg`
+ * still honors it. Do not reuse this escape hatch at body size.
  */
 export function Ordinal({ value, size = 'md', onDeep, accent }: OrdinalProps) {
+  const accentEligible = accent && size === 'lg';
   return (
     <View style={styles.ordinalWrap}>
       <Text
@@ -93,7 +100,7 @@ export function Ordinal({ value, size = 'md', onDeep, accent }: OrdinalProps) {
         style={[
           size === 'lg' ? styles.ordinalLarge : styles.ordinal,
           onDeep && styles.onDeep,
-          accent && styles.ordinalAccent,
+          accentEligible && styles.ordinalAccent,
         ]}>
         {value}
       </Text>

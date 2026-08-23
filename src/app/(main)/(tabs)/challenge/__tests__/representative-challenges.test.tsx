@@ -5,7 +5,9 @@ import { useLocalSearchParams } from 'expo-router';
 import { desertFoundationsPack } from '@/content';
 
 import ChallengeScreen from '../[challengeId]';
-import FieldScreen from '../[challengeId]/field';
+// Field Mode deliberately lives outside `(tabs)` (see (main)/(tabs)/_layout.tsx) —
+// this is the one import in this file that reaches back out to `(main)`.
+import FieldScreen from '@/app/(main)/challenge/[challengeId]/field';
 import PrepareScreen from '../[challengeId]/prepare';
 import ReviewScreen from '../[challengeId]/review';
 

@@ -24,14 +24,14 @@ type BadawiWordmarkProps = {
 
 // ── BADAWI WORDMARK ──────────────────────────────────────────────────────
 //
-// "BADAWI" set in Fraunces 700 (the brand display serif — see
+// "BADAWI" set in Young Serif (the brand display serif — see
 // src/design/tokens/typography.ts) in all caps with size-dependent tracking.
 //
 // This is a TREATMENT of the name, not the identity on its own: the wordmark
 // must not be used as the sole brand element in a primary placement (app
 // icon, splash, Welcome). Those use `BadawiLockup`, which pairs it with the
-// Waypoint mark. The wordmark alone is for secondary placements — a screen
-// header, a footer, a document byline.
+// approved "1A" circular mark. The wordmark alone is for secondary
+// placements — a screen header, a footer, a document byline.
 //
 // Letterspacing is applied via `letterSpacing` rather than by inserting
 // spaces between characters, so the string stays a single accessible,
@@ -60,6 +60,13 @@ export function BadawiWordmark({ size = 'md', color = colors.textPrimary }: Bada
   );
 }
 
+type LockupSurface = 'light' | 'deep';
+
+const LOCKUP_TEXT_COLOR: Record<LockupSurface, string> = {
+  light: colors.textPrimary,
+  deep: colors.textOnDeep,
+};
+
 type BadawiLockupProps = {
   size?: WordmarkSize;
   /**
@@ -68,10 +75,13 @@ type BadawiLockupProps = {
    * lockup for constrained bars and headers.
    */
   orientation?: 'stacked' | 'inline';
-  color?: string;
-  accentColor?: string;
-  /** Passed through to the mark. Use `mono` on Indigo grounds. */
-  variant?: 'duotone' | 'mono';
+  /**
+   * Which surface the lockup sits on — selects the correctly-coloured mark
+   * asset (`BadawiMark`'s `surface`) and a matching text colour. `light`
+   * (default) for background/surfaceWarm/Ecru grounds, `deep` for
+   * `colors.surfaceDeep` (Night).
+   */
+  surface?: LockupSurface;
   /**
    * A short qualifying line beneath the wordmark, set as a survey label.
    * Intended for real scope/territory framing only — never marketing copy.
@@ -86,26 +96,19 @@ type BadawiLockupProps = {
 // own gap; `inline` relies on the parent's padding.
 //
 // Minimum sizes: `stacked` at `sm` or larger; `inline` at `sm` or larger. Do
-// not scale the lockup below `sm` — use a bare compact `BadawiMark` instead.
+// not scale the lockup below `sm` — use a bare `BadawiMark` instead.
 export function BadawiLockup({
   size = 'lg',
   orientation = 'stacked',
-  color = colors.textPrimary,
-  accentColor = colors.accent,
-  variant = 'duotone',
+  surface = 'light',
   kicker,
 }: BadawiLockupProps) {
   const markSize = MARK_SIZE[size];
+  const color = LOCKUP_TEXT_COLOR[surface];
 
   return (
     <View style={orientation === 'stacked' ? styles.stacked : styles.inline}>
-      <BadawiMark
-        size={markSize}
-        color={color}
-        accentColor={accentColor}
-        variant={variant}
-        compact={markSize <= 24}
-      />
+      <BadawiMark size={markSize} surface={surface} />
       <View style={orientation === 'stacked' ? styles.stackedType : styles.inlineType}>
         <BadawiWordmark size={size} color={color} />
         {kicker && (

@@ -1,12 +1,16 @@
 import { Pressable, StyleSheet, Text, View, type PressableProps } from 'react-native';
 
+import { withOpacity } from '@/components/plate';
 import { pressedSurfaceStyle } from '@/components/press-feedback';
 import { colors, elevation, radii, spacing, touchTarget, typography } from '@/design/tokens';
 
 type ActionButtonProps = Omit<PressableProps, 'children' | 'style'> & {
   label: string;
   /**
-   * `primary`   filled Ecru — the forward action on a screen.
+   * `primary`   filled Ink with Light text — the forward action on a screen
+   *             (Phase 5A: "Enter the region", "Start learning", footer
+   *             CTAs — the approved design's one consistent primary-button
+   *             treatment).
    * `secondary` hairline-outlined — a peer action of equal validity, not a
    *             lesser one. Used for Postpone/Refuse, which must never read
    *             as failure (docs/safety/README.md).
@@ -101,13 +105,13 @@ const styles = StyleSheet.create({
     opacity: 0.82,
   },
   primary: {
-    backgroundColor: colors.surfaceWarm,
+    backgroundColor: colors.textPrimary,
     ...elevation.low,
   },
   secondary: {
     backgroundColor: 'transparent',
     borderWidth: 1.5,
-    borderColor: colors.textSecondary,
+    borderColor: withOpacity(colors.textPrimary, 0.24),
   },
   deep: {
     backgroundColor: colors.surfaceDeep,
@@ -144,8 +148,16 @@ const styles = StyleSheet.create({
   labelOnDeep: {
     color: colors.textOnDeep,
   },
+  // Primary is now an Ink fill (see `primary` above), so its label reuses
+  // the same verified light-on-dark pairing `textOnDeep` uses on Indigo —
+  // Light on Ink is the same 10.43:1 ratio the locked contrast matrix
+  // already measures for Ink/Light (src/design/tokens/colors.ts), just with
+  // the two roles swapped.
+  labelOnInk: {
+    color: colors.textOnDeep,
+  },
   labelSecondary: {
-    color: colors.textSecondary,
+    color: colors.textPrimary,
   },
 });
 
@@ -157,7 +169,7 @@ const VARIANT_SURFACE = {
 } as const;
 
 const VARIANT_LABEL = {
-  primary: undefined,
+  primary: styles.labelOnInk,
   secondary: styles.labelSecondary,
   deep: styles.labelOnDeep,
   field: undefined,

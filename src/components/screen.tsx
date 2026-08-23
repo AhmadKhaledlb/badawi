@@ -116,8 +116,14 @@ export function Screen({
 
 const styles = StyleSheet.create({
   safeArea: {
+    // Phase 5A: the screen canvas is Bone (surfaceWarm), reserving Light
+    // (colors.background) for elevated Plates/cards on top of it — the
+    // two-tone relationship the approved design uses consistently (every
+    // screen's own root is Bone; its cards are Light). Do not swap this back
+    // to `colors.background` — that would collapse the canvas/card contrast
+    // the approved screens rely on.
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: colors.surfaceWarm,
   },
   backdrop: {
     position: 'absolute',

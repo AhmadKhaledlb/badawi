@@ -1,14 +1,23 @@
 // ─────────────────────────────────────────────────────────────────────────
-// BADAWI brand mark — "WAYPOINT"
+// BADAWI brand mark — "WAYPOINT" (RETIRED, Phase 5A)
 // ─────────────────────────────────────────────────────────────────────────
 //
-// THE SINGLE SOURCE OF TRUTH for the mark's geometry. Consumed by:
-//   • src/design/brand/badawi-mark.tsx  — the in-app React Native SVG mark
-//   • scripts/generate-brand-assets.js  — the app icon / favicon / splash /
-//     Android adaptive-icon rasterizer, and the .svg vector exports
+// The Waypoint mark is retired. `src/design/brand/badawi-mark.tsx` (the
+// in-app mark) now renders the approved Phase 5A raster "1A" mark from
+// `assets/brand/v2/` instead of this geometry, and no longer imports this
+// file.
 //
-// Because both read these exact path strings, the icon on the home screen and
-// the mark inside the app can never drift apart.
+// This file is kept ONLY because `scripts/generate-brand-assets.js` still
+// reads it to rasterize the native app icon / adaptive icon / favicon
+// assets in `assets/brand/` (icon.png, adaptive-icon-*.png, favicon.png)
+// referenced from `app.json` — those have not been re-exported from the
+// approved Phase 5A mark yet (no safe-zone-padded icon crop has been
+// supplied), so `app.json` and this generator remain on the old mark for
+// those three. (`app.json`'s native splash `image` has been re-pointed
+// directly at `assets/brand/v2/badawi-mark-light.png` — that one didn't
+// need re-export, just a config change.) Do not delete this file, or run
+// the generator to re-derive new icon output, without confirming the icon
+// re-export is actually approved first.
 //
 // ── CONCEPT ──────────────────────────────────────────────────────────────
 // An observation instrument framing a desert horizon, with a navigational

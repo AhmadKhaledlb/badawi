@@ -45,21 +45,35 @@ export const easings = Object.freeze({
   standard: Easing.bezier(0.4, 0, 0.2, 1),
 } as const);
 
-/** Screen's primary content on mount: a restrained rise-and-fade. */
+/**
+ * Screen's primary content on mount: a restrained rise-and-fade.
+ *
+ * Phase 5A correction: this was a spring (`.springify().damping(18)`), which
+ * reads as an exaggerated bounce on every screen that uses it — nearly every
+ * navigation into Region/Pack/Unit/Challenge, since `ScreenHeader` also uses
+ * this token (src/components/screen-header.tsx). Damping 18 is a fairly
+ * underdamped spring (more oscillation, not less); simply raising the
+ * damping further would still be spring physics with the overshoot just
+ * dialed down, not "no spring bounce". Approved motion direction is
+ * restrained/quick/no-overshoot, so this is now a plain timing curve — the
+ * same `easings.standard` deceleration used elsewhere for calm, non-bouncy
+ * arrivals, not springify at all.
+ */
 export const contentEnter = FadeInDown.duration(durations.base)
-  .springify()
-  .damping(18)
+  .easing(easings.standard)
   .reduceMotion(ReduceMotion.System);
 
 /** A plain fade, for supplementary elements where a rise would be redundant. */
 export const fadeEnter = FadeIn.duration(durations.base).reduceMotion(ReduceMotion.System);
 
-/** Staggered list/plate arrival, in reading order. Capped so long lists don't crawl. */
+/**
+ * Staggered list/plate arrival, in reading order. Capped so long lists don't
+ * crawl. Phase 5A: no longer a spring — see `contentEnter` above for why.
+ */
 export function staggeredEnter(index: number) {
   return FadeInDown.duration(durations.base)
     .delay(Math.min(index, 8) * 45)
-    .springify()
-    .damping(18)
+    .easing(easings.standard)
     .reduceMotion(ReduceMotion.System);
 }
 
@@ -74,17 +88,6 @@ export function terrainSettle(depth: number) {
   return FadeInDown.duration(durations.atmospheric)
     .delay(depth * 90)
     .easing(easings.settle)
-    .reduceMotion(ReduceMotion.System);
-}
-
-/**
- * WAYPOINTS REGISTER — a map node / station marker appearing. Deliberately
- * delayed behind its route line and its plate so the eye reads path first,
- * destination second.
- */
-export function waypointEnter(index: number) {
-  return FadeIn.duration(durations.slow)
-    .delay(220 + Math.min(index, 8) * 70)
     .reduceMotion(ReduceMotion.System);
 }
 

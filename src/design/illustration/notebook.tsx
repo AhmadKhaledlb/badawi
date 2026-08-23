@@ -113,9 +113,9 @@ type CornerMarksProps = {
 /**
  * Registration brackets at the four corners of a surface — the mark a
  * surveyor's plate or a printed plate carries. Applied to hero terrain
- * windows and the Blueprint Map canvas to make illustration read as a
- * *plotted sheet* rather than a photo crop. Absolutely positioned; the parent
- * must be `position: relative` and clip its overflow.
+ * windows and the Region/Explore map canvases to make illustration read as
+ * a *plotted sheet* rather than a photo crop. Absolutely positioned; the
+ * parent must be `position: relative` and clip its overflow.
  */
 export function CornerMarks({ ground = 'light', inset = 12, arm = 14 }: CornerMarksProps) {
   const stroke = ground === 'onDeep' ? colors.ruleOnDeep : colors.rule;

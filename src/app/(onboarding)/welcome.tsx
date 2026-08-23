@@ -31,9 +31,9 @@ import { useProgress } from '@/state/progress-context';
 // language — the atmospheric world, and the surveyor's notebook laid across
 // it — and every screen after this one is a variation on it.
 //
-// The Waypoint mark straddles the boundary between the two layers, pinned in
-// a disc on the paper's top edge, so the brand reads as the join between
-// world and record rather than as a logo dropped on a background.
+// The approved "1A" mark straddles the boundary between the two layers,
+// pinned in a disc on the paper's top edge, so the brand reads as the join
+// between world and record rather than as a logo dropped on a background.
 //
 // CONTRAST: the mark and all type sit on the Light Neutral sheet (Brown
 // 10.43:1, Terracotta star 4.39:1 as a graphic). Only the scope eyebrow sits
@@ -77,7 +77,7 @@ export default function WelcomeScreen() {
           <View style={[styles.sheet, { paddingHorizontal: layout.gutter }]}>
             {/* The mark, pinned on the boundary between terrain and paper. */}
             <View style={styles.markDisc}>
-              <BadawiMark size={54} label="BADAWI" />
+              <BadawiMark size={54} surface="light" label="BADAWI" />
             </View>
 
             <View style={[styles.lockup, { maxWidth: contentWidth.identity }]}>

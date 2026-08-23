@@ -29,7 +29,7 @@ export const contentWidth = Object.freeze({
    */
   reading: 620,
   /**
-   * Measure for spatial/map screens (Blueprint Map, Pack route, Unit chain).
+   * Measure for spatial/map screens (Region map, Pack route, Unit chain).
    * Wider than `reading` because the route composition needs lateral room,
    * but still bounded so the terrain art keeps its intended proportions.
    */

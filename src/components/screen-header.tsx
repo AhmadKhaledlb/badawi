@@ -1,6 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
+import { RoundIconButton } from '@/components/round-icon-button';
 import { Eyebrow, ScreenHeading } from '@/components/section-heading';
 import { TextLink } from '@/components/text-link';
 import { HairlineRule } from '@/design/illustration/notebook';
@@ -22,7 +23,7 @@ type ScreenHeaderProps = {
    * them as well as being redundant to a screen reader.
    */
   trail?: string[];
-  /** A single trailing action (e.g. Profile from the Blueprint Map). */
+  /** A single trailing action (e.g. Settings from Profile). */
   action?: { label: string; onPress: () => void };
   /** Draws the measured rule under the header. Off for headers over a hero window. */
   rule?: boolean;
@@ -43,7 +44,11 @@ export function ScreenHeader({
     <Animated.View entering={contentEnter} style={styles.container}>
       {(onBack || action) && (
         <View style={styles.topRow}>
-          {onBack ? <TextLink label="Back" leading="back" onPress={onBack} /> : <View />}
+          {onBack ? (
+            <RoundIconButton icon="chevronLeft" accessibilityLabel="Back" onPress={onBack} />
+          ) : (
+            <View />
+          )}
           {action && <TextLink label={action.label} onPress={action.onPress} />}
         </View>
       )}

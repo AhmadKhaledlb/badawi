@@ -17,7 +17,7 @@ import { useProgress } from '@/state/progress-context';
 // ── PROFILE — THE FIELD RECORD ───────────────────────────────────────────
 //
 // Profile is the learner's own page of the notebook: a record sheet, with the
-// Waypoint mark set as a watermark behind it. It brings Profile into the
+// approved "1A" mark set as a watermark behind it. It brings Profile into the
 // redesign's visual language without inventing a single thing to fill it.
 //
 // ── ONLY REAL DATA ───────────────────────────────────────────────────────
@@ -49,16 +49,18 @@ export default function ProfileScreen() {
 
   return (
     <Screen measure="reading" backdropHeight={210}>
+      {/* Phase 5A: Profile is now a primary tab-bar destination, not a
+          pushed screen, so it has no Back affordance — matching Home's
+          tab-root header treatment. Settings remains a real forward push. */}
       <ScreenHeader
         title="Profile"
-        onBack={() => router.back()}
         action={{ label: 'Settings', onPress: () => router.push('/settings') }}
       />
 
       <Animated.View entering={contentEnter}>
         <Plate variant="paper" elevated style={styles.record}>
           <View style={styles.watermark} pointerEvents="none">
-            <BadawiMark size={120} variant="mono" color={colors.textSecondary} />
+            <BadawiMark size={120} surface="light" />
           </View>
 
           <Eyebrow>Field record</Eyebrow>

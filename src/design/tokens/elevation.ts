@@ -3,9 +3,9 @@ import { palette } from './palette';
 // Phase 5D.3 — elevation scale.
 //
 // Implementation-level only (docs/design/README.md lists elevation as
-// unspecified). Shadow color is Brown used as a neutral dark rendering
+// unspecified). Shadow color is Ink used as a neutral dark rendering
 // value — shadows are conventionally a dark neutral. This is NOT a new
-// semantic role for Brown, and introduces no palette color.
+// semantic role for Ink, and introduces no palette color.
 //
 // The 5D.3 language treats elevation as "paper lifted off terrain": plates
 // float above the illustrated backdrop, so shadows are soft and wide rather
@@ -16,7 +16,7 @@ export const elevation = Object.freeze({
   none: {},
   /** A resting plate on the page. */
   low: {
-    shadowColor: palette.brown,
+    shadowColor: palette.ink,
     shadowOpacity: 0.07,
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 3 },
@@ -24,7 +24,7 @@ export const elevation = Object.freeze({
   },
   /** A plate lifted over illustration, or a pressed/active surface. */
   medium: {
-    shadowColor: palette.brown,
+    shadowColor: palette.ink,
     shadowOpacity: 0.12,
     shadowRadius: 20,
     shadowOffset: { width: 0, height: 8 },
@@ -32,7 +32,7 @@ export const elevation = Object.freeze({
   },
   /** The Welcome brand lockup and the active map waypoint only. */
   high: {
-    shadowColor: palette.brown,
+    shadowColor: palette.ink,
     shadowOpacity: 0.18,
     shadowRadius: 34,
     shadowOffset: { width: 0, height: 14 },
